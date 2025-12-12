@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ../..
+      dockerfile: apps/teddy-front/Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - VITE_API_URL=${VITE_API_URL:-http://localhost:3000}
+    networks:
+      - teddy-network
+
+networks:
+  teddy-network:
+    driver: bridge

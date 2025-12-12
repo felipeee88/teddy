@@ -1,0 +1,10 @@
+{
+  "name": "@teddy-front/teddy-front-e2e",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "implicitDependencies": [
+      "@teddy-front/teddy-front"
+    ]
+  }
+}
