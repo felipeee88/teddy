@@ -29,6 +29,10 @@
 *.sln.docstates
 *.userprefs
 
+# JetBrains Rider
+.idea/
+*.sln.iml
+
 # Test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
@@ -149,6 +153,10 @@ testem.log
 # Vitest/Vite timestamps
 vite.config.*.timestamp*
 vitest.config.*.timestamp*
+
+# Docker
+docker-compose.override.yml
+.dockerignore
 
 # ===================================
 # IDEs and Editors

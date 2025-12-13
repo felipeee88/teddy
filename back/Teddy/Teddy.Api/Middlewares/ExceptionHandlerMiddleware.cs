@@ -29,7 +29,7 @@ public class ExceptionHandlerMiddleware
 
     private async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
-        _logger.LogError(exception, "Erro ao processar requisição: {Message}", exception.Message);
+        _logger.LogError(exception, "Request processing error");
 
         context.Response.ContentType = "application/json";
 
@@ -39,7 +39,7 @@ public class ExceptionHandlerMiddleware
                 HttpStatusCode.BadRequest,
                 new ErrorResponse
                 {
-                    Message = "Um ou mais erros de validação ocorreram",
+                    Message = "One or more validation errors occurred",
                     Errors = validationEx.Errors
                 }
             ),
@@ -61,7 +61,7 @@ public class ExceptionHandlerMiddleware
                 HttpStatusCode.InternalServerError,
                 new ErrorResponse
                 {
-                    Message = "Erro interno ao processar a solicitação. Tente novamente mais tarde."
+                    Message = "An internal error occurred while processing the request"
                 }
             )
         };

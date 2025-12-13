@@ -31,24 +31,13 @@ public class AuthService : IAuthService
                 .GroupBy(e => e.PropertyName)
                 .ToDictionary(g => g.Key, g => g.Select(e => e.ErrorMessage).ToArray());
             
-            _logger.LogWarning("Falha na validação de login para usuário: {UserName}", request.Name);
             throw new Domain.Exceptions.ValidationException(errors);
         }
 
-        try
-        {
-            var name = request.Name.Trim();
-            _logger.LogInformation("Gerando token de autenticação para usuário: {UserName}", name);
-            
-            var token = _tokenProvider.GenerateToken(name);
-            var expiresIn = _tokenProvider.GetExpirationInSeconds();
-            
-            return new LoginResponse(token, name, expiresIn);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Erro ao gerar token de autenticação para usuário: {UserName}", request.Name);
-            throw;
-        }
+        var name = request.Name.Trim();
+        var token = _tokenProvider.GenerateToken(name);
+        var expiresIn = _tokenProvider.GetExpirationInSeconds();
+        
+        return new LoginResponse(token, name, expiresIn);
     }
 }

@@ -24,12 +24,7 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<LoginResponse>> Login([FromBody] LoginRequest request)
     {
-        _logger.LogInformation("Iniciando autenticação do usuário: {UserName}", request.Name);
-        
         var response = await _authService.LoginAsync(request);
-        
-        _logger.LogInformation("Usuário autenticado com sucesso: {UserName}", response.UserName);
-        
         return Ok(response);
     }
 }

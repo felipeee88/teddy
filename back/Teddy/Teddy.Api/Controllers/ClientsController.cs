@@ -26,12 +26,7 @@ public class ClientsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<ClientResponse>> Create([FromBody] CreateClientRequest request)
     {
-        _logger.LogInformation("Iniciando criação de cliente: {ClientName}", request.Name);
-        
         var response = await _clientService.CreateAsync(request);
-        
-        _logger.LogInformation("Cliente criado com sucesso. Id: {ClientId}", response.Id);
-        
         return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
     }
 
@@ -42,10 +37,7 @@ public class ClientsController : ControllerBase
         [FromQuery] int page = 1, 
         [FromQuery] int pageSize = 16)
     {
-        _logger.LogInformation("Listando clientes - Página: {Page}, Tamanho: {PageSize}", page, pageSize);
-        
         var response = await _clientService.ListAsync(page, pageSize);
-        
         return Ok(response);
     }
 
@@ -55,10 +47,7 @@ public class ClientsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<ClientResponse>> GetById(Guid id)
     {
-        _logger.LogInformation("Buscando cliente por Id: {ClientId}", id);
-        
         var response = await _clientService.GetByIdAsync(id);
-        
         return Ok(response);
     }
 
@@ -69,12 +58,7 @@ public class ClientsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<ClientResponse>> Update(Guid id, [FromBody] UpdateClientRequest request)
     {
-        _logger.LogInformation("Atualizando cliente: {ClientId}", id);
-        
         var response = await _clientService.UpdateAsync(id, request);
-        
-        _logger.LogInformation("Cliente atualizado com sucesso: {ClientId}", id);
-        
         return Ok(response);
     }
 
@@ -84,12 +68,7 @@ public class ClientsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Delete(Guid id)
     {
-        _logger.LogInformation("Excluindo cliente: {ClientId}", id);
-        
         await _clientService.DeleteAsync(id);
-        
-        _logger.LogInformation("Cliente excluído com sucesso: {ClientId}", id);
-        
         return NoContent();
     }
 }
