@@ -1,20 +1,44 @@
 export interface Client {
-  id: number;
+  id: string;
   name: string;
   salary: number;
-  companyValuation: number;
+  companyValue: number;
+  accessCount: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export type CreateClientDTO = Omit<Client, 'id'>;
-export type UpdateClientDTO = Omit<Client, 'id'>;
+export interface CreateClientDTO {
+  name: string;
+  salary: number;
+  companyValue: number;
+}
 
-export interface PaginatedResponse<T> {
-  clients: T[];
+export interface UpdateClientDTO {
+  name: string;
+  salary: number;
+  companyValue: number;
+}
+
+export interface PagedResult<T> {
+  items: T[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
   totalPages: number;
-  currentPage: number;
 }
 
 export interface PaginationParams {
   page: number;
   pageSize: number;
+}
+
+export interface LoginRequest {
+  name: string;
+}
+
+export interface LoginResponse {
+  token: string;
+  userName: string;
+  expiresIn: number;
 }

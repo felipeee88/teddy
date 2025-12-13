@@ -1,21 +1,21 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Client } from '../../../shared/lib/selectedClients.store';
+import { CreateClientDTO } from '../../../shared/types/client';
 import { Modal } from '../../../shared/components/Modal';
 import './ClientModals.css';
 
 const clientSchema = z.object({
   name: z.string().min(1, 'Nome é obrigatório'),
   salary: z.number().min(0.01, 'Salário deve ser maior que 0'),
-  companyValuation: z.number().min(0.01, 'Valor da empresa deve ser maior que 0'),
+  companyValue: z.number().min(0.01, 'Valor da empresa deve ser maior que 0'),
 });
 
 type ClientFormData = z.infer<typeof clientSchema>;
 
 interface ClientCreateModalProps {
   onClose: () => void;
-  onCreate: (client: Omit<Client, 'id'>) => Promise<void>;
+  onCreate: (client: CreateClientDTO) => Promise<void>;
 }
 
 export function ClientCreateModal({ onClose, onCreate }: ClientCreateModalProps) {
@@ -62,14 +62,14 @@ export function ClientCreateModal({ onClose, onCreate }: ClientCreateModalProps)
         <div className="form-group">
           <input
             type="number"
-            id="companyValuation"
+            id="companyValue"
             placeholder="Digite o valor da empresa:"
             step="0.01"
-            {...register('companyValuation', { valueAsNumber: true })}
-            className={errors.companyValuation ? 'error' : ''}
+            {...register('companyValue', { valueAsNumber: true })}
+            className={errors.companyValue ? 'error' : ''}
           />
-          {errors.companyValuation && (
-            <span className="error-message">{errors.companyValuation.message}</span>
+          {errors.companyValue && (
+            <span className="error-message">{errors.companyValue.message}</span>
           )}
         </div>
 

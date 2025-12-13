@@ -1,13 +1,13 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Client } from '../types';
+import { Client } from '../types/client';
 
 interface SelectedClientsStore {
   selectedClients: Client[];
   addClient: (client: Client) => void;
-  removeClient: (clientId: number) => void;
+  removeClient: (clientId: string) => void;
   clearClients: () => void;
-  isClientSelected: (clientId: number) => boolean;
+  isClientSelected: (clientId: string) => boolean;
 }
 
 export const useSelectedClientsStore = create<SelectedClientsStore>()(

@@ -56,7 +56,11 @@ describe('LoginPage', () => {
 
   it('deve fazer login com sucesso e navegar para /clients', async () => {
     const user = userEvent.setup();
-    vi.mocked(authService.login).mockResolvedValue('fake-token');
+    vi.mocked(authService.login).mockResolvedValue({
+      token: 'fake-token',
+      userName: 'João Silva',
+      expiresIn: 3600,
+    });
     
     render(
       <BrowserRouter>
@@ -78,8 +82,8 @@ describe('LoginPage', () => {
 
   it('deve desabilitar botão durante submissão', async () => {
     const user = userEvent.setup();
-    let resolvePromise: (value: string) => void;
-    const loginPromise = new Promise<string>((resolve) => {
+    let resolvePromise: (value: { token: string; userName: string; expiresIn: number }) => void;
+    const loginPromise = new Promise<{ token: string; userName: string; expiresIn: number }>((resolve) => {
       resolvePromise = resolve;
     });
     vi.mocked(authService.login).mockReturnValue(loginPromise);
@@ -98,7 +102,7 @@ describe('LoginPage', () => {
 
     expect(button).toBeDisabled();
     
-    resolvePromise('fake-token');
+    resolvePromise({ token: 'fake-token', userName: 'João Silva', expiresIn: 3600 });
     await waitFor(() => {
       expect(mockNavigate).toHaveBeenCalled();
     });
@@ -106,8 +110,8 @@ describe('LoginPage', () => {
 
   it('deve mostrar botão Entrando durante submissão', async () => {
     const user = userEvent.setup();
-    let resolvePromise: (value: string) => void;
-    const loginPromise = new Promise<string>((resolve) => {
+    let resolvePromise: (value: { token: string; userName: string; expiresIn: number }) => void;
+    const loginPromise = new Promise<{ token: string; userName: string; expiresIn: number }>((resolve) => {
       resolvePromise = resolve;
     });
     vi.mocked(authService.login).mockReturnValue(loginPromise);

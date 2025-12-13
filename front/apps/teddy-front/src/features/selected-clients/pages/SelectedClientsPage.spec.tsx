@@ -7,8 +7,8 @@ import { SelectedClientsPage } from './SelectedClientsPage';
 import { useSelectedClientsStore } from '../../../shared/lib/selectedClients.store';
 
 const mockClients = [
-  { id: 1, name: 'João Silva', salary: 5000, companyValuation: 100000 },
-  { id: 2, name: 'Maria Santos', salary: 6500, companyValuation: 150000 },
+  { id: '1', name: 'João Silva', salary: 5000, companyValue: 100000, accessCount: 0, createdAt: '2024-01-01', updatedAt: '2024-01-01' },
+  { id: '2', name: 'Maria Santos', salary: 6500, companyValue: 150000, accessCount: 0, createdAt: '2024-01-01', updatedAt: '2024-01-01' },
 ];
 
 describe('SelectedClientsPage', () => {

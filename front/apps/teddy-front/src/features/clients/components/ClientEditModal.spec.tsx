@@ -3,14 +3,17 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/vitest';
 import { ClientEditModal } from './ClientEditModal';
-import { Client } from '../../../shared/lib/selectedClients.store';
+import { Client } from '../../../shared/types/client';
 
 describe('ClientEditModal', () => {
   const mockClient: Client = {
-    id: 1,
+    id: '1',
     name: 'João Silva',
     salary: 5000,
-    companyValuation: 100000,
+    companyValue: 100000,
+    accessCount: 0,
+    createdAt: '2024-01-01',
+    updatedAt: '2024-01-01',
   };
 
   const mockOnClose = vi.fn();
@@ -80,7 +83,7 @@ describe('ClientEditModal', () => {
       expect(mockOnSave).toHaveBeenCalledWith({
         name: 'Maria Santos',
         salary: 6000,
-        companyValuation: 100000,
+        companyValue: 100000,
       });
     });
 

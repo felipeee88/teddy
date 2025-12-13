@@ -3,14 +3,17 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/vitest';
 import { ClientCard } from './ClientCard';
-import { Client } from '../../../shared/lib/selectedClients.store';
+import { Client } from '../../../shared/types/client';
 
 describe('ClientCard', () => {
   const mockClient: Client = {
-    id: 1,
+    id: '1',
     name: 'João Silva',
     salary: 5000,
-    companyValuation: 100000,
+    companyValue: 100000,
+    accessCount: 0,
+    createdAt: '2024-01-01',
+    updatedAt: '2024-01-01',
   };
 
   const mockOnEdit = vi.fn();

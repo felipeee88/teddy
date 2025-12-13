@@ -1,4 +1,4 @@
-import { Client } from '../../../shared/lib/selectedClients.store';
+import { Client } from '../../../shared/types/client';
 import { formatCurrencyBRL } from '../../../shared/lib/format';
 import './SelectedClientCard.css';
 
@@ -16,7 +16,7 @@ export function SelectedClientCard({ client, onRemove }: SelectedClientCardProps
           <strong>Salário:</strong> {formatCurrencyBRL(client.salary)}
         </p>
         <p>
-          <strong>Empresa:</strong> {formatCurrencyBRL(client.companyValuation)}
+          <strong>Empresa:</strong> {formatCurrencyBRL(client.companyValue)}
         </p>
       </div>
       <div className="client-actions">

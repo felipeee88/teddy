@@ -1,22 +1,13 @@
 import apiClient from '../../../shared/lib/apiClient';
 import { useAuthStore } from '../../../shared/lib/auth.store';
-
-interface LoginResponse {
-  token: string;
-}
+import { LoginRequest, LoginResponse } from '../../../shared/types/client';
 
 class AuthService {
-  async login(name: string): Promise<string> {
-    try {
-      const response = await apiClient.post<LoginResponse>('/auth/login', { name });
-      const token = response.data.token;
-      useAuthStore.getState().login(name, token);
-      return token;
-    } catch {
-      const token = btoa(JSON.stringify({ name, iat: Date.now() }));
-      useAuthStore.getState().login(name, token);
-      return token;
-    }
+  async login(name: string): Promise<LoginResponse> {
+    const response = await apiClient.post<LoginResponse>('/auth/login', { name } as LoginRequest);
+    const { token, userName, expiresIn } = response.data;
+    useAuthStore.getState().login(userName, token);
+    return response.data;
   }
 
   logout(): void {

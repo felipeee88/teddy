@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { ClientCard } from '../components/ClientCard';
 import { Pagination } from '../components/Pagination';
 import clientsService from '../services/clients.service';
-import { Client, useSelectedClientsStore } from '../../../shared/lib/selectedClients.store';
+import { Client, CreateClientDTO } from '../../../shared/types/client';
+import { useSelectedClientsStore } from '../../../shared/lib/selectedClients.store';
 import { ClientCreateModal } from '../components/ClientCreateModal';
 import { ClientEditModal } from '../components/ClientEditModal';
 import { ClientDeleteModal } from '../components/ClientDeleteModal';
@@ -24,8 +25,8 @@ export function ClientsPage() {
     setLoading(true);
     try {
       const data = await clientsService.getClients(currentPage, pageSize);
-      setClients(data.clients);
-      setTotal(data.total);
+      setClients(data.items);
+      setTotal(data.totalCount);
     } catch (error) {
       console.error('Erro ao carregar clientes:', error);
     } finally {
@@ -46,13 +47,13 @@ export function ClientsPage() {
     setCurrentPage(1);
   };
 
-  const handleCreateClient = async (client: Omit<Client, 'id'>) => {
+  const handleCreateClient = async (client: CreateClientDTO) => {
     await clientsService.createClient(client);
     setShowCreateModal(false);
     loadClients();
   };
 
-  const handleEditClient = async (client: Omit<Client, 'id'>) => {
+  const handleEditClient = async (client: CreateClientDTO) => {
     if (editingClient) {
       await clientsService.updateClient(editingClient.id, client);
       setEditingClient(null);

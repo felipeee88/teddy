@@ -1,4 +1,4 @@
-import { Client } from '../../../shared/lib/selectedClients.store';
+import { Client } from '../../../shared/types/client';
 import { Modal } from '../../../shared/components/Modal';
 import './ClientModals.css';
 
