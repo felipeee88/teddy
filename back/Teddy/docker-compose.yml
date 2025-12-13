@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: teddy-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-teddy_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./Teddy.Infra/Scripts:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - teddy-network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: teddy-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+      ASPNETCORE_URLS: http://+:3000
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=${POSTGRES_DB:-teddy_db};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-postgres}"
+      JWT__Secret: ${JWT_SECRET:-SuperSecretKeyForJwtTokenGeneration123456789}
+      JWT__Issuer: ${JWT_ISSUER:-TeddyApi}
+      JWT__Audience: ${JWT_AUDIENCE:-TeddyClient}
+      JWT__ExpiresMinutes: ${JWT_EXPIRES_MINUTES:-60}
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - teddy-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  teddy-network:
+    driver: bridge
