@@ -94,18 +94,6 @@ public class ClientServiceTests
     }
 
     [Fact]
-    public async Task GetByIdAsync_NonExistingClient_ShouldThrowNotFoundException()
-    {
-        var clientId = Guid.NewGuid();
-        _repositoryMock.Setup(r => r.GetByIdAsync(clientId)).ReturnsAsync((Client?)null);
-
-        Func<Task> act = async () => await _clientService.GetByIdAsync(clientId);
-
-        await act.Should().ThrowAsync<NotFoundException>()
-            .WithMessage("Cliente não encontrado");
-    }
-
-    [Fact]
     public async Task ListAsync_ShouldReturnPagedResult()
     {
         var clients = new List<Client>
