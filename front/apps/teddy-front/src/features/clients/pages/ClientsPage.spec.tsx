@@ -30,7 +30,7 @@ describe('ClientsPage', () => {
     vi.clearAllMocks();
     vi.mocked(clientsService.getClients).mockResolvedValue({
       items: mockClients,
-      totalCount: 3,
+      totalItems: 3,
       page: 1,
       pageSize: 16,
       totalPages: 1,
@@ -114,7 +114,7 @@ describe('ClientsPage', () => {
     
     vi.mocked(clientsService.getClients).mockResolvedValue({
       items: mockClients,
-      totalCount: 50,
+      totalItems: 50,
       page: 1,
       pageSize: 16,
       totalPages: 4,

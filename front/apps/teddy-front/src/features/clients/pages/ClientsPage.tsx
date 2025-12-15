@@ -3,6 +3,7 @@ import { ClientCard } from '../components/ClientCard';
 import { Pagination } from '../components/Pagination';
 import clientsService from '../services/clients.service';
 import { Client, CreateClientDTO } from '../../../shared/types/client';
+import { ApiError } from '../../../shared/types/error';
 import { useSelectedClientsStore } from '../../../shared/lib/selectedClients.store';
 import { ClientCreateModal } from '../components/ClientCreateModal';
 import { ClientEditModal } from '../components/ClientEditModal';
@@ -26,9 +27,13 @@ export function ClientsPage() {
     try {
       const data = await clientsService.getClients(currentPage, pageSize);
       setClients(data.items);
-      setTotal(data.totalCount);
+      setTotal(data.totalItems);
     } catch (error) {
-      console.error('Erro ao carregar clientes:', error);
+      if (error instanceof ApiError) {
+        console.error('Erro ao carregar clientes:', error.message);
+      } else {
+        console.error('Erro ao carregar clientes:', error);
+      }
     } finally {
       setLoading(false);
     }

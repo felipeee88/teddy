@@ -17,38 +17,18 @@ describe('AuthService', () => {
 
   it('deve fazer login com sucesso quando API responde', async () => {
     vi.mocked(apiClient.post).mockResolvedValue({
-      data: { token: 'api-token-123' },
-    } as { data: { token: string } });
+      data: { 
+        token: 'api-token-123',
+        userName: 'João Silva',
+        expiresIn: 3600
+      },
+    });
 
-    const token = await authService.login('João Silva');
+    await authService.login('João Silva');
 
-    expect(apiClient.post).toHaveBeenCalledWith('/auth/login', { name: 'João Silva' });
-    expect(token).toBe('api-token-123');
+    expect(apiClient.post).toHaveBeenCalledWith('/api/v1/auth/token', { name: 'João Silva' });
     expect(useAuthStore.getState().token).toBe('api-token-123');
     expect(useAuthStore.getState().userName).toBe('João Silva');
-  });
-
-  it('deve fazer login com token mock quando API falha', async () => {
-    vi.mocked(apiClient.post).mockRejectedValue(new Error('API error'));
-
-    const token = await authService.login('Maria Santos');
-
-    expect(apiClient.post).toHaveBeenCalledWith('/auth/login', { name: 'Maria Santos' });
-    expect(token).toBeDefined();
-    expect(typeof token).toBe('string');
-    expect(useAuthStore.getState().userName).toBe('Maria Santos');
-    expect(useAuthStore.getState().token).toBe(token);
-  });
-
-  it('deve gerar token mock válido quando API falha', async () => {
-    vi.mocked(apiClient.post).mockRejectedValue(new Error('Network error'));
-
-    const token = await authService.login('Test User');
-    
-    // Token deve ser base64
-    const decoded = JSON.parse(atob(token));
-    expect(decoded.name).toBe('Test User');
-    expect(decoded.iat).toBeDefined();
   });
 
   it('deve fazer logout e limpar estado', () => {
@@ -90,24 +70,6 @@ describe('AuthService', () => {
     authService.logout();
     expect(authService.isAuthenticated()).toBe(false);
   });
-
-  it('deve lidar com erro de rede na API', async () => {
-    vi.mocked(apiClient.post).mockRejectedValue(new Error('Network timeout'));
-
-    const token = await authService.login('Test User');
-
-    // Deve gerar fallback token
-    expect(token).toBeDefined();
-    expect(useAuthStore.getState().isAuthenticated()).toBe(true);
-  });
-
-  it('deve lidar com resposta inválida da API', async () => {
-    vi.mocked(apiClient.post).mockRejectedValue(new Error('Invalid response'));
-
-    const token = await authService.login('Test User');
-
-    // Deve usar fallback
-    expect(token).toBeDefined();
-    expect(useAuthStore.getState().userName).toBe('Test User');
+});
   });
 });

@@ -4,7 +4,7 @@ import { LoginRequest, LoginResponse } from '../../../shared/types/client';
 
 class AuthService {
   async login(name: string): Promise<LoginResponse> {
-    const response = await apiClient.post<LoginResponse>('/auth/login', { name } as LoginRequest);
+    const response = await apiClient.post<LoginResponse>('/api/v1/auth/token', { name } as LoginRequest);
     const { token, userName, expiresIn } = response.data;
     useAuthStore.getState().login(userName, token);
     return response.data;

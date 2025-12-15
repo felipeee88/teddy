@@ -7,7 +7,7 @@ using Teddy.Application.Interfaces.Services;
 namespace Teddy.Api.Controllers;
 
 [ApiController]
-[Route("clients")]
+[Route("api/v1/clients")]
 [Authorize]
 public class ClientsController : ControllerBase
 {

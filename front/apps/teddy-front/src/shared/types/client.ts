@@ -22,9 +22,9 @@ export interface UpdateClientDTO {
 
 export interface PagedResult<T> {
   items: T[];
-  totalCount: number;
   page: number;
   pageSize: number;
+  totalItems: number;
   totalPages: number;
 }
 

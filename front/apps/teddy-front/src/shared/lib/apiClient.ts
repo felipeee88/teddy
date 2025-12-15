@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useAuthStore } from './auth.store';
+import { ApiError, ApiErrorResponse } from '../types/error';
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
@@ -28,7 +29,16 @@ apiClient.interceptors.response.use(
         window.location.href = '/login';
       }
     }
-    return Promise.reject(error);
+    
+    // Padronizar erro
+    const errorData = error.response?.data as ApiErrorResponse;
+    const apiError = new ApiError(
+      errorData?.message || error.message || 'An unexpected error occurred',
+      error.response?.status || 500,
+      errorData?.errors
+    );
+    
+    return Promise.reject(apiError);
   }
 );
 

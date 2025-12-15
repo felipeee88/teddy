@@ -6,7 +6,7 @@ using Teddy.Application.Interfaces.Services;
 namespace Teddy.Api.Controllers;
 
 [ApiController]
-[Route("auth")]
+[Route("api/v1/auth")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
@@ -18,11 +18,11 @@ public class AuthController : ControllerBase
         _logger = logger;
     }
 
-    [HttpPost("login")]
+    [HttpPost("token")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<LoginResponse>> Login([FromBody] LoginRequest request)
+    public async Task<ActionResult<LoginResponse>> Token([FromBody] LoginRequest request)
     {
         var response = await _authService.LoginAsync(request);
         return Ok(response);

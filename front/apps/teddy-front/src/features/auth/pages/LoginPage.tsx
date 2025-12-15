@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
 import authService from '../services/auth.service';
+import { ApiError } from '../../../shared/types/error';
 import './LoginPage.css';
 
 const loginSchema = z.object({
@@ -26,7 +27,11 @@ export function LoginPage() {
       await authService.login(data.name);
       navigate('/clients');
     } catch (error) {
-      console.error('Erro ao fazer login:', error);
+      if (error instanceof ApiError) {
+        console.error('Erro ao fazer login:', error.message, error.errors);
+      } else {
+        console.error('Erro ao fazer login:', error);
+      }
     }
   };
 
